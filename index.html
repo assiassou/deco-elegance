@@ -190,8 +190,9 @@ footer .brand em{color:var(--gold-l)}
 
 @media(max-width:900px){
   header nav{display:none}
-  .hero .wrap,.split,.order-card{grid-template-columns:1fr}
-  .hero{padding-top:2.5rem}
+  .split,.order-card{grid-template-columns:1fr}
+  .hero .wrap{display:flex;flex-direction:column-reverse;gap:2rem}
+  .hero{padding-top:1.5rem}
   .badge{left:12px}
   .room-grid{grid-template-columns:1fr 1fr}
   .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:180px}
