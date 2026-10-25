@@ -481,7 +481,15 @@ let q = 1;
 const tEl = document.getElementById('total'), oImg = document.getElementById('offer-img');
 document.querySelectorAll('input[name=pack]').forEach(r => r.addEventListener('change', () => {
   q = +r.value; tEl.textContent = PACKS[q] + ' DH'; oImg.src = `assets/offer${q}.jpg`;
+  track('AddToCart', { value: PACKS[q], currency: 'MAD', content_name: q + ' pack(s)', num_items: q });
 }));
+
+// Meta Pixel funnel events
+function track(ev, p) { if (typeof fbq === 'function') fbq('track', ev, p); }
+track('ViewContent', { content_name: 'Set Papillon Doré', value: PRICE, currency: 'MAD' });
+let checkoutSent = false;
+function initCheckout() { if (checkoutSent) return; checkoutSent = true; track('InitiateCheckout', { value: PACKS[q], currency: 'MAD', num_items: q }); }
+document.querySelectorAll('#order-form input:not([type=radio]), #order-form textarea').forEach(i => i.addEventListener('focus', initCheckout, { once: true }));
 
 // Order submit
 document.getElementById('order-form').addEventListener('submit', async e => {
@@ -503,7 +511,7 @@ document.getElementById('order-form').addEventListener('submit', async e => {
       body: JSON.stringify({ _subject: `Nouvelle commande – ${data.name} (${data.total})`, _template: 'table', _captcha: 'false', ...data }) });
   } catch (_) {}
   if (typeof fbq === 'function') {
-    fbq('track', 'Purchase', { value: PACKS[q], currency: 'MAD' });
+    fbq('track', 'Purchase', { value: PACKS[q], currency: 'MAD', content_name: q + ' pack(s)', num_items: q });
   }
   document.getElementById('form-body').style.display = 'none';
   document.getElementById('order-ok').style.display = 'block';
